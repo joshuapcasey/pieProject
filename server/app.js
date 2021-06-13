@@ -1,11 +1,26 @@
 require('dotenv').config();                     // 1
 const Express = require('express');             // 2
 const app = Express();                          // 3
-const controllers = require('./controllers');   // 4
+app.use(Express.json());                        // 4
 
-app.use('/pies', controllers.piecontroller);
+const controllers = require('./controllers');   // 5
+const dbConnection = require('./db');           // 
 
-app.listen(process.env.PORT, () => console.log(`[Server]: App is listening on ${process.env.PORT}`));      // 4
+app.use('/pies', controllers.piecontroller);    // 
+
+dbConnection.authenticate()                     // 8   
+    .then(() => dbConnection.sync())            // 9
+    .then(() => {
+        app.listen(process.env.PORT, () => console.log(`[Server]: App is listening on ${process.env.PORT}`));      // 5
+    })
+    .catch((err) => {
+        console.log("[Server]: Server crashed");
+        console.log(err);
+    })
+
+
+
+
 
 //! Below code can be used as a landing page to display "coming soon" for project in development utilizing a /public endpoint
 // app.use(Express.static(__dirname +'/public'))
@@ -18,8 +33,12 @@ app.listen(process.env.PORT, () => console.log(`[Server]: App is listening on ${
     2:  Invoking Nodes 'require()' function.  Specifying the name of the module we want to import (express).
     3:  The app variable is actually creating our express application.  We grab the express module (part 1) and invoke it.
         - unlocks the use of HTTP requests, middleware functionality, and some other basic application settings.
-    4:  Imports controllers into our app. Controllers are a way to isolate funcitionality in our app
-    5:  Starts our server on port 4000 and runs a console log that states that it is running.
+    4:  Method built into express to recognize incoming request object as json object. Returns middleware that only parses json. Helps us send our javascript objects to our database.
+    5:  Imports controllers into our app. Controllers are a way to isolate funcitionality in our app
+    5:  
+    8:  Tests if the connection to the database is ok then returns another promise
+    9:  If database connection is good, .synch() method to sync models with database
+    10: Starts our server on port 4000 and runs a console log that states that it is running.
     
     MVC - Model View Controller
         Model: in a todo app, we might define what a "task" is and that a "list" is a collection of tasks.

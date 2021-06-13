@@ -4,8 +4,12 @@ npm init -Y
 npm install --save-dev nodemon
 npm install express
 npm install dotenv
-
+npm install sequelize     
+npm install pg pg-hstore
 ==========================================
+**These are listed as dependencies in package.json**
+
+npx nodemon === CLI command to start server from terminal
 
 *npm start vs npm dev*
 
@@ -29,6 +33,9 @@ npm install dotenv
     - Not a model view controller framework by itself. Still need to use our own ORM (object-relational mapping) library.
         -*Sequelize
 
+# dotenv
+: An environmental file (.env) allows us to set up application wide variables. **Still must be created manually after terminal install**
+
 # Sequelize
     - is a JS library that we'll use to manage our PostgreSQL databases 
     - is an object relational mapper (ORM) - meaning that it sends our data to our databases using JS object syntax
@@ -38,7 +45,5 @@ npm install dotenv
 # pgAdmin
     - The pg package allows us to write the dialect that Sequelize needs to speak to our PostgreSQL databases
 
-# dotenv
-: An environmental file (.env) allows us to set up application wide variables. **Still must be created manually after terminal install**
 
-DB Connection URI = database://user:password@host:port/dbname
+DB Connection URI Format = database://user:password@host:port/dbname
