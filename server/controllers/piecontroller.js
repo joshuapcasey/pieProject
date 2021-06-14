@@ -18,7 +18,7 @@ router.get('/', async(req, res) => {
 
 router.get('/name/:name', async(req,res) => {
     try {
-        const locatedPie=  await PieModel.findOne({
+        const locatedPie =  await PieModel.findOne({
             where: {nameOfPie: req.params.name}
         })
         res.status(200).json({
@@ -77,6 +77,23 @@ router.put('/:id', async(req,res) => {
     } catch(err) {
         res.status(500).json({
             msg: `Failed to update pie: ${err}`
+        })
+    }
+})
+
+router.delete('/delete/:id', async (req,res) => {
+    try {
+        const locatedPie = await PieModel.destroy({
+            where: {id: req.params.id}
+        })
+            res.status(200).json({
+                msg: `Pie deleted!`,
+                deletedPie: locatedPie
+            })
+        
+    } catch (error) {
+        res.status(500).json({
+            msg: `Unable to delete: ${error}`
         })
     }
 })
